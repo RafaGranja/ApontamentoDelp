@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1034508809815",
+    "project_id": "apontamento-ti-delp",
+    "storage_bucket": "apontamento-ti-delp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034508809815:android:779dd752a0a21c88aa5512",
+        "android_client_info": {
+          "package_name": "com.example.apontamentodelp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034508809815-uf52fd84oq0javmve5uckdmv16q8i1p7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUo2bF5BJPI4wZMyz-uiiK5jAxj-rK1d4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034508809815-uf52fd84oq0javmve5uckdmv16q8i1p7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
