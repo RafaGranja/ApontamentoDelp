@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'login_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});
@@ -58,7 +58,8 @@ class MyFormLogin extends State<FormLogin> {
             InputUserLogin(),
             InputSenhaLogin(),
             BotaoLogin(),
-            BotaoRegistrarLogin()
+            BotaoRegistrarLogin(),
+            //BotaoMicrosoft(),
           ],
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
@@ -340,6 +341,97 @@ class _BotaoRegistrarLoginState extends State<BotaoRegistrarLogin> {
           // ignore: prefer_const_constructors
           child: Text(
             'Não possuo conta',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BotaoMicrosoft extends StatefulWidget {
+  const BotaoMicrosoft({super.key});
+
+  @override
+  State<BotaoMicrosoft> createState() => _BotaoMicrosoftState();
+}
+
+class _BotaoMicrosoftState extends State<BotaoMicrosoft> {
+
+  Future<void> Microsoft() async {
+    
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+    if(googleUser!=null){
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      User? user = (await _auth.signInWithCredential(credential)).user;
+
+      if(user!=null){
+
+        setState(() {
+          Fluttertoast.showToast(
+              msg: "Login efetuado com sucesso",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              textColor: Colors.white,
+              fontSize: 16.0,
+              backgroundColor: Colors.green.shade800,
+              webPosition: "center",
+              webBgColor: Colors.green.shade800.toString(),);
+        });
+      
+        Navigator.of(context).pushReplacementNamed('/home');
+
+      }
+      else if(user!=null){
+
+        setState(() {
+          Fluttertoast.showToast(
+              msg: "Email não foi verificado",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              textColor: Colors.white,
+              fontSize: 16.0,
+              backgroundColor: Colors.yellow.shade700,
+              webPosition: "center",
+              webBgColor: Colors.yellow.shade700.toString(),);
+        });
+
+      }
+
+    }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 40.0),
+      child: FractionallySizedBox(
+        widthFactor: 0.4,
+        child: TextButton(
+          onPressed: Microsoft,
+          // ignore: prefer_const_constructors
+          style: ButtonStyle(
+            backgroundColor: const MaterialStatePropertyAll<Color>(Colors.lightGreen),
+          ),
+          // ignore: prefer_const_constructors
+          child: Text(
+            'Login Microsoft',
             style: const TextStyle(
               color: Colors.white,
             ),

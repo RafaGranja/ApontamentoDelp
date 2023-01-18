@@ -1,8 +1,12 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
+import '../dateInput/date.dart';
+import '../dateInput/time.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -37,10 +41,7 @@ class _HomeState extends State<Home> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Nova Atividade',
-      style: optionStyle,
-    ),
+    NovaAtividade(),
     Text(
       'Histórico',
       style: optionStyle,
@@ -61,7 +62,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(titles.elementAt(_selectedIndex)),
+        title: Text(titles.elementAt(_selectedIndex)),backgroundColor: Colors.red.shade600,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -89,3 +90,30 @@ class _HomeState extends State<Home> {
   }
 
 }
+
+class NovaAtividade extends StatefulWidget {
+  const NovaAtividade({super.key});
+
+  @override
+  State<NovaAtividade> createState() => _NovaAtividadeState();
+}
+
+class _NovaAtividadeState extends State<NovaAtividade> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left:200.0,right: 200.0),
+      child: Center(
+        child: GridView.count(crossAxisCount: 2,crossAxisSpacing: 50.0,mainAxisSpacing: 0.0,
+          children:  [
+          Container(alignment: Alignment.center,child:const InitDate()),
+           Container(alignment: Alignment.center,child:const InitTimePicker()),
+           Container(alignment: Alignment.topCenter,child:const FinalDate()),
+           Container(alignment: Alignment.topCenter,child:const InitTimePicker()),
+          ],)
+        
+        )
+    );
+  }
+}
+
