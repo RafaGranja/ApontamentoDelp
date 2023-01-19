@@ -102,7 +102,7 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                 controller: timeinput, //editing controller of this TextField
                 decoration: const InputDecoration( 
                    icon: Icon(Icons.timer), //icon of text field
-                   labelText: "Hora Inicial" //label text of field
+                   labelText: "Hora Final" //label text of field
                 ),
                 readOnly: true,  //set it true, so that user will not able to edit text
                 onTap: () async {
