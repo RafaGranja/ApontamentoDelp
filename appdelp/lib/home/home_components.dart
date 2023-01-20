@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -132,9 +133,9 @@ class _NoteInputState extends State<NoteInput> {
       margin: EdgeInsets.only(top:(MediaQuery.of(context).size.width)/20),
       height: (MediaQuery.of(context).size.height)/10,
       child:const TextField(
-              maxLines: 4,
+              maxLines: 5,
               decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
+              contentPadding: EdgeInsets.all(20.0),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue, width: 2.0),
               ),
@@ -199,11 +200,19 @@ class _ClienteInputState extends State<ClienteInput> {
     Container(
       margin: EdgeInsets.only(top:(MediaQuery.of(context).size.width)/10),
       height: (MediaQuery.of(context).size.width)/5,
-      child:const TextField(decoration: InputDecoration(
+      child: TextField(decoration: const InputDecoration(
               contentPadding: EdgeInsets.zero,
               label: Text('Cliente',textScaleFactor: 1.4,),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              )
+              ),
+              onTap:() {
+                  showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                      return ClienteDialog();
+                  }
+                );
+              },
             )
     );
   }
@@ -223,11 +232,19 @@ class _ProjetoInputState extends State<ProjetoInput> {
     return 
     Container(
       height: (MediaQuery.of(context).size.height)/10,
-      child:const TextField(decoration: InputDecoration(
+      child: TextField(decoration: const InputDecoration(
               contentPadding: EdgeInsets.zero,
               label: Text('Projeto',textScaleFactor: 1.4,),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              )
+              ),
+              onTap:() {
+                  showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                      return ProjetoDialog();
+                  }
+                );
+              },
             )
     );
   }
@@ -244,15 +261,64 @@ class CamposHoras extends StatefulWidget {
 class _CamposHorasState extends State<CamposHoras> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: (MediaQuery.of(context).size.width)/1.6,
-      child: GridView.count(crossAxisCount: 2,crossAxisSpacing: 20.0,mainAxisSpacing: 0.0,
+    return Container(
+      height: (MediaQuery.of(context).size.height)/3,
+      child: GridView.count(crossAxisCount: 2,crossAxisSpacing: 20.0,
+          scrollDirection: Axis.vertical,
+          physics: const NeverScrollableScrollPhysics(),
           children:  [
           Container(alignment: Alignment.center,child:const InitDate()),
           Container(alignment: Alignment.center,child:const InitTimePicker()),
           Container(alignment: Alignment.topCenter,child:const FinalDate()),
           Container(alignment: Alignment.topCenter,child:const FinalTimePicker()),
         ]),);
+  }
+}
+
+
+class ClienteDialog extends StatefulWidget {
+  const ClienteDialog({super.key});
+
+  @override
+  State<ClienteDialog> createState() => _ClienteDialogState();
+}
+
+class _ClienteDialogState extends State<ClienteDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: const Text('Clientes'),
+      content: Column(
+        children: const [Text('Cliente1'),Text('Cliente2'),Text('Cliente3')]
+      ),
+      actions:  [
+        CupertinoDialogAction(onPressed: (){Navigator.pop(context, 'Cancelar');},child: const Text('Cancelar'),),
+        CupertinoDialogAction(onPressed: (){Navigator.pop(context, 'Confirmar');},child: const Text('Confirmar'),)
+      ],
+    );
+  }
+}
+
+class ProjetoDialog extends StatefulWidget {
+  const ProjetoDialog({super.key});
+
+  @override
+  State<ProjetoDialog> createState() => _ProjetoDialogState();
+}
+
+class _ProjetoDialogState extends State<ProjetoDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: const Text('Projetos'),
+      content: Column(
+        children: const [Text('Projeto1'),Text('Projeto2'),Text('Projeto3')]
+      ),
+      actions:  [
+        CupertinoDialogAction(onPressed: (){Navigator.pop(context, 'Cancelar');},child: const Text('Cancelar'),),
+        CupertinoDialogAction(onPressed: (){Navigator.pop(context, 'Confirmar');},child: const Text('Confirmar'),)
+      ],
+    );
   }
 }
 

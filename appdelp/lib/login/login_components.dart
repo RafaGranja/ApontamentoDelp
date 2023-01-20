@@ -3,6 +3,7 @@ import 'login_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});
@@ -51,7 +52,9 @@ class MyFormLogin extends State<FormLogin> {
 
     return Container(
         margin: const EdgeInsets.only(top: 200.0),
-        child: ListView(
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [ListView(
           // ignore: sort_child_properties_last
           children: const [
             // ignore: prefer_const_constructors
@@ -63,7 +66,8 @@ class MyFormLogin extends State<FormLogin> {
           ],
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
-        ));
+        ),
+        ],));
   }
 
 }
@@ -170,13 +174,22 @@ class BotaoLogin extends StatefulWidget {
 }
 
 class _BotaoLoginState extends State<BotaoLogin> {
+
   Future<void> Logar() async {
     String email = LoginController.instance.getEmail().trim();
     String pass = LoginController.instance.getPassword().trim();
     User? user = null;
     if (email.isNotEmpty && pass.isNotEmpty) {
-
+       
       try {
+
+        setState(() {
+          
+          EasyLoading.show(status: 'Aguarde...');
+
+        });
+        
+
         UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: pass,
@@ -185,7 +198,12 @@ class _BotaoLoginState extends State<BotaoLogin> {
         user = finaluser;
         if(user!=null && user.emailVerified){
 
+
+
           setState(() {
+
+            EasyLoading.dismiss();
+
             Fluttertoast.showToast(
                 msg: "Login efetuado com sucesso",
                 toastLength: Toast.LENGTH_SHORT,
@@ -206,6 +224,9 @@ class _BotaoLoginState extends State<BotaoLogin> {
           if(!user.emailVerified){
 
             setState(() {
+
+              EasyLoading.dismiss();
+
               Fluttertoast.showToast(
                   msg: "Email ainda não foi verificado",
                   toastLength: Toast.LENGTH_SHORT,
@@ -226,6 +247,9 @@ class _BotaoLoginState extends State<BotaoLogin> {
         if (e.code == 'user-not-found') {
 
           setState(() {
+
+            EasyLoading.dismiss();
+
             Fluttertoast.showToast(
                 msg: "Email não encontrado",
                 toastLength: Toast.LENGTH_SHORT,
@@ -241,6 +265,9 @@ class _BotaoLoginState extends State<BotaoLogin> {
         } else if (e.code == 'wrong-password') {
 
           setState(() {
+
+            EasyLoading.dismiss();
+
             Fluttertoast.showToast(
                 msg: "Senha inválida",
                 toastLength: Toast.LENGTH_SHORT,
@@ -257,6 +284,9 @@ class _BotaoLoginState extends State<BotaoLogin> {
         else if(e.code == 'user-disabled'){
 
           setState(() {
+
+            EasyLoading.dismiss();
+
             Fluttertoast.showToast(
                 msg: "Email não autenticado",
                 toastLength: Toast.LENGTH_SHORT,
@@ -273,6 +303,9 @@ class _BotaoLoginState extends State<BotaoLogin> {
         else if (e.code=='invalid-email'){
 
           setState(() {
+
+            EasyLoading.dismiss();
+
             Fluttertoast.showToast(
                 msg: "Email não encontrado",
                 toastLength: Toast.LENGTH_SHORT,
@@ -288,6 +321,23 @@ class _BotaoLoginState extends State<BotaoLogin> {
         }
       }
       
+    }
+    else{
+
+        setState(() {
+
+            Fluttertoast.showToast(
+                msg: "Favor preencher todos os campos",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 2,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                backgroundColor: Colors.yellow.shade800,
+                webPosition: "center",
+                webBgColor: Colors.yellow.shade800.toString(),);
+          });
+
     }
   }
 

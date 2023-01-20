@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../login/login_components.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class MyRegisterPage extends StatefulWidget {
   const MyRegisterPage({super.key});
@@ -201,7 +202,15 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
     if (email != "" && email.isNotEmpty) {
       if (pass1.isNotEmpty && pass2.isNotEmpty && pass1 == pass2) {
         if(pass1.length > 6){
+
           try {
+            
+            setState(() {
+              
+              EasyLoading.show(status: 'Aguarde...');
+
+            });
+
             UserCredential  credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
               email: email,
               password: pass1,
@@ -213,6 +222,9 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
               await finaluser?.sendEmailVerification();
 
               setState(() {
+
+                EasyLoading.dismiss();
+
                 Fluttertoast.showToast(
                       msg: "Usuário cadastrado com sucesso, verifique seu email",
                       toastLength: Toast.LENGTH_SHORT,
@@ -231,6 +243,9 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
             else{
 
               setState(() {
+
+                EasyLoading.dismiss();
+
                 Fluttertoast.showToast(
                       msg: "Erro ao cadastrar usuário",
                       toastLength: Toast.LENGTH_SHORT,
@@ -250,6 +265,9 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
             if (e.code == 'weak-password') {
               print('The password provided is too weak.');
               setState(() {
+
+                EasyLoading.dismiss();
+
                 Fluttertoast.showToast(
                       msg: "Senha inserida é fraca para o cadastro",
                       toastLength: Toast.LENGTH_SHORT,
@@ -263,6 +281,9 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
               });
             } else if (e.code == 'email-already-in-use') {
               setState(() {
+
+                EasyLoading.dismiss();
+
                 Fluttertoast.showToast(
                       msg: "O email inserido já está cadastrado",
                       toastLength: Toast.LENGTH_SHORT,
@@ -279,6 +300,9 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
             else if(e.code=='network-request-failed'){
 
               setState(() {
+
+                EasyLoading.dismiss();
+
                 Fluttertoast.showToast(
                       msg: "Falha de conexão",
                       toastLength: Toast.LENGTH_SHORT,
@@ -300,6 +324,7 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
       else{
 
           setState(() {
+
             Fluttertoast.showToast(
                 msg: "Senha deve ter mais de 6 caracteres",
                 toastLength: Toast.LENGTH_SHORT,
@@ -316,6 +341,7 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
 
       } else {
         setState(() {
+
           Fluttertoast.showToast(
               msg: "As senhas precisam ser iguais",
               toastLength: Toast.LENGTH_SHORT,
@@ -332,6 +358,7 @@ class _BotaoRegistrarState extends State<BotaoRegistrar> {
     } else {
 
       setState(() {
+
           Fluttertoast.showToast(
               msg: "Insira um email",
               toastLength: Toast.LENGTH_SHORT,
