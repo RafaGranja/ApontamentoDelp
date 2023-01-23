@@ -54,7 +54,7 @@ class _InitTimePickerState extends State<InitTimePicker> {
                       DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
                       //converting to DateTime so that we can further format on different pattern.
                       print(parsedTime); //output 1970-01-01 22:53:00.000
-                      String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
+                      String formattedTime = DateFormat('HH:mm').format(parsedTime);
                       print(formattedTime); //output 14:59:00
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 
@@ -122,7 +122,7 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                       DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
                       //converting to DateTime so that we can further format on different pattern.
                       print(parsedTime); //output 1970-01-01 22:53:00.000
-                      String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
+                      String formattedTime = DateFormat('HH:mm').format(parsedTime);
                       print(formattedTime); //output 14:59:00
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 

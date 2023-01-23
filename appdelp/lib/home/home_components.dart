@@ -103,8 +103,9 @@ class _NovaAtividadeState extends State<NovaAtividade> {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-      heightFactor: 1.1,
+      heightFactor: 1.0,
       widthFactor: 0.9,
+      alignment: Alignment.center,
         child: ListView(
           children: const[
           CamposHoras(),
@@ -262,15 +263,26 @@ class _CamposHorasState extends State<CamposHoras> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: (MediaQuery.of(context).size.height)/3,
-      child: GridView.count(crossAxisCount: 2,crossAxisSpacing: 20.0,
+      height: (MediaQuery.of(context).size.width)/1.5,
+      padding: EdgeInsets.only(bottom:(MediaQuery.of(context).size.height)/200.0,top: 0.0,left: 10.0,right: 10.0),
+      child: GridView.count(crossAxisCount: 2,
           scrollDirection: Axis.vertical,
           physics: const NeverScrollableScrollPhysics(),
+          crossAxisSpacing: 15.0,
+          mainAxisSpacing: 0.0,
           children:  [
-          Container(alignment: Alignment.center,child:const InitDate()),
-          Container(alignment: Alignment.center,child:const InitTimePicker()),
-          Container(alignment: Alignment.topCenter,child:const FinalDate()),
-          Container(alignment: Alignment.topCenter,child:const FinalTimePicker()),
+          Container(
+            width: 200.0,
+            alignment: Alignment.center,child:const InitDate()),
+          Container(
+             width: 200.0,
+             alignment: Alignment.center,child:const InitTimePicker()),
+          Container(
+             width: 200.0,
+           alignment: Alignment.topCenter,child:const FinalDate()),
+          Container(
+             width: 200.0,
+           alignment: Alignment.topCenter,child:const FinalTimePicker()),
         ]),);
   }
 }
