@@ -50,6 +50,7 @@ class _InitTimePickerState extends State<InitTimePicker> {
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                       setState(() {
+                        TimeInputController.instance.text1 = formattedTime;
                         timeinput.text = formattedTime; //set the value of text field. 
                       });
                   }else{
@@ -75,7 +76,7 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
 
   @override
   void initState() {
-    timeinput.text = TimeInputController.instance.text1; //set the initial value of text field
+    timeinput.text = TimeInputController.instance.text2; //set the initial value of text field
     super.initState();
   }
 
@@ -110,6 +111,7 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                       setState(() {
+                        TimeInputController.instance.text2 = formattedTime;
                         timeinput.text = formattedTime; //set the value of text field. 
                       });
                   }else{
