@@ -37,7 +37,7 @@ class _InitTimePickerState extends State<InitTimePicker> {
                 ),
                 readOnly: true,  //set it true, so that user will not able to edit text
                 onTap: () async {
-                  TimeOfDay? pickedTime =  await showTimePicker(
+                  showTimePicker(
                           initialTime: TimeOfDay.now(),
                           context: context,
                           confirmText : "Confirmar",
@@ -46,24 +46,28 @@ class _InitTimePickerState extends State<InitTimePicker> {
                           hourLabelText : "Hora",
                           minuteLabelText : "Minuto",
                           helpText : "Ajuda"
-                      );
-                  
-                  if(pickedTime != null ){
-                      print(pickedTime.format(context));   //output 10:51 PM
-                      DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                      //converting to DateTime so that we can further format on different pattern.
-                      print(parsedTime); //output 1970-01-01 22:53:00.000
-                      String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                      print(formattedTime); //output 14:59:00
-                      //DateFormat() is from intl package, you can format the time on any pattern you need.
+                      ).then((value) {
+                        
+                        if(value != null ){
+                          print(value.format(context));   //output 10:51 PM
+                          DateTime parsedTime = DateFormat.jm().parse(value.format(context).toString());
+                          //converting to DateTime so that we can further format on different pattern.
+                          print(parsedTime); //output 1970-01-01 22:53:00.000
+                          String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                          print(formattedTime); //output 14:59:00
+                          //DateFormat() is from intl package, you can format the time on any pattern you need.
 
-                      setState(() {
-                        timeinput.text = formattedTime; //set the value of text field. 
-                        TimeInputController.instance.text1 = formattedTime;
+                          setState(() {
+                            timeinput.text = formattedTime; //set the value of text field. 
+                            TimeInputController.instance.text1 = formattedTime;
+                          });
+                        }else{
+                            print("Time is not selected");
+                        } 
+
                       });
-                  }else{
-                      print("Time is not selected");
-                  }
+                  
+                
                 },
              );
   }
@@ -104,7 +108,7 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                 ),
                 readOnly: true,  //set it true, so that user will not able to edit text
                 onTap: () async {
-                  TimeOfDay? pickedTime =  await showTimePicker(
+                  showTimePicker(
                           initialTime: TimeOfDay.now(),
                           context: context,
                           confirmText : "Confirmar",
@@ -113,28 +117,26 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                           hourLabelText : "Hora",
                           minuteLabelText : "Minuto",
                           helpText : "Ajuda"
-                      );
-                  
-                  if(pickedTime != null ){
-
-                    print(pickedTime.format(context));   //output 10:51 PM
-                    DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                    //converting to DateTime so that we can further format on different pattern.
-                    print(parsedTime); //output 1970-01-01 22:53:00.000
-                    String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                    print(formattedTime); //output 14:59:00
-                    //DateFormat() is from intl package, you can format the time on any pattern you need.
-
-                    setState(() {
-                      timeinput.text = formattedTime; //set the value of text field. 
-                      TimeInputController.instance.text2 = formattedTime;
-                    });
-
-                  }else{
-
-                    print("Time is not selected");
+                      ).then((value) {
                         
-                  }
+                        if(value != null ){
+                          print(value.format(context));   //output 10:51 PM
+                          DateTime parsedTime = DateFormat.jm().parse(value.format(context).toString());
+                          //converting to DateTime so that we can further format on different pattern.
+                          print(parsedTime); //output 1970-01-01 22:53:00.000
+                          String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                          print(formattedTime); //output 14:59:00
+                          //DateFormat() is from intl package, you can format the time on any pattern you need.
+
+                          setState(() {
+                            timeinput.text = formattedTime; //set the value of text field. 
+                            TimeInputController.instance.text1 = formattedTime;
+                          });
+                        }else{
+                            print("Time is not selected");
+                        } 
+
+                      });
 
                 },
              );
