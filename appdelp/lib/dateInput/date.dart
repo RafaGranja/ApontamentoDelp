@@ -56,12 +56,9 @@ class _InitDateState extends State<InitDate> {
                     );
  
                 if (pickedDate != null) {
-                  print(
-                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                  String formattedDate =
-                      DateFormat('dd/MM/yyyy').format(pickedDate);
-                  print(
-                      formattedDate); //formatted date output using intl package =>  2021-03-16
+                  //print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                  String formattedDate =DateFormat('dd/MM/yyyy').format(pickedDate);
+                  //print(formattedDate); //formatted date output using intl package =>  2021-03-16
                   setState(() {
                     DateInput.instance.text1 =
                         formattedDate;
@@ -125,12 +122,9 @@ class _FinalDateState extends State<FinalDate> {
                     );
  
                 if (pickedDate != null) {
-                  print(
-                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                  String formattedDate =
-                      DateFormat('dd/MM/yyyy').format(pickedDate);
-                  print(
-                      formattedDate); //formatted date output using intl package =>  2021-03-16
+                  //print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                  String formattedDate =DateFormat('dd/MM/yyyy').format(pickedDate);
+                  //print(formattedDate); //formatted date output using intl package =>  2021-03-16
                   setState(() {
                     DateInput.instance.text2 =
                         formattedDate;
