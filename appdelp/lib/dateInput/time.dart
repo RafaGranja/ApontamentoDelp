@@ -56,10 +56,9 @@ class _InitTimePickerState extends State<InitTimePicker> {
                           String formattedTime = DateFormat('HH:mm').format(parsedTime);
                           print(formattedTime); //output 14:59:00
                           //DateFormat() is from intl package, you can format the time on any pattern you need.
-
+                          TimeInputController.instance.text1 = formattedTime;
                           setState(() {
                             timeinput.text = formattedTime; //set the value of text field. 
-                            TimeInputController.instance.text1 = formattedTime;
                           });
                         }else{
                             print("Time is not selected");
@@ -127,10 +126,9 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                           String formattedTime = DateFormat('HH:mm').format(parsedTime);
                           print(formattedTime); //output 14:59:00
                           //DateFormat() is from intl package, you can format the time on any pattern you need.
-
+                          TimeInputController.instance.text1 = formattedTime;
                           setState(() {
                             timeinput.text = formattedTime; //set the value of text field. 
-                            TimeInputController.instance.text1 = formattedTime;
                           });
                         }else{
                             print("Time is not selected");
