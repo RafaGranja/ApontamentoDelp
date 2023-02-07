@@ -17,6 +17,7 @@ class _InitDateState extends State<InitDate> {
   @override
   void initState() {
     super.initState();
+    datecontroller.text = DateInput.instance.text1;
     datecontroller.addListener(() {
       final String text = datecontroller.text;
       datecontroller.value = datecontroller.value.copyWith(
@@ -84,6 +85,7 @@ class _FinalDateState extends State<FinalDate> {
   @override
   void initState() {
     super.initState();
+    datecontroller.text = DateInput.instance.text2;
     datecontroller.addListener(() {
       final String text = datecontroller.text;
       datecontroller.value = datecontroller.value.copyWith(
@@ -126,9 +128,8 @@ class _FinalDateState extends State<FinalDate> {
                   String formattedDate =DateFormat('dd/MM/yyyy').format(pickedDate);
                   //print(formattedDate); //formatted date output using intl package =>  2021-03-16
                   setState(() {
-                    DateInput.instance.text2 =
-                        formattedDate;
-                        datecontroller.text=formattedDate; //set output date to TextField value.
+                    DateInput.instance.text2 =formattedDate;
+                    datecontroller.text=formattedDate; //set output date to TextField value.
                   });
                 } else {}
               },
@@ -140,7 +141,7 @@ class DateInput extends ChangeNotifier{
 
   static DateInput instance = DateInput();
 
-  late String text1;
-  late String text2;
+  late String text1="";
+  late String text2="";
   
 }

@@ -17,6 +17,15 @@ class _InitTimePickerState extends State<InitTimePicker> {
   void initState() {
     timeinput.text = TimeInputController.instance.text1; //set the initial value of text field
     super.initState();
+    timeinput.addListener(() {
+      final String text = timeinput.text;
+      timeinput.value = timeinput.value.copyWith(
+        text: text,
+        selection:
+            TextSelection(baseOffset: text.length, extentOffset: text.length),
+        composing: TextRange.empty,
+      );
+    });
   }
 
   @override
@@ -46,7 +55,7 @@ class _InitTimePickerState extends State<InitTimePicker> {
                       //converting to DateTime so that we can further format on different pattern.
                       print(parsedTime); //output 1970-01-01 22:53:00.000
                       String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                      print(formattedTime); //output 14:59:00
+                      print(formattedTime); //output 14:59
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                       setState(() {
@@ -71,19 +80,28 @@ class FinalTimePicker extends StatefulWidget {
 
 class _FinalTimePickerState extends State<FinalTimePicker> {
 
-  final TextEditingController timeinput = TextEditingController(); 
+  final TextEditingController timeinput2 = TextEditingController(); 
 
 
   @override
   void initState() {
-    timeinput.text = TimeInputController.instance.text2; //set the initial value of text field
+    timeinput2.text = TimeInputController.instance.text2; //set the initial value of text field
     super.initState();
+    timeinput2.addListener(() {
+      final String text = timeinput2.text;
+      timeinput2.value = timeinput2.value.copyWith(
+        text: text,
+        selection:
+            TextSelection(baseOffset: text.length, extentOffset: text.length),
+        composing: TextRange.empty,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-                controller: timeinput, //editing controller of this TextField
+                controller: timeinput2, //editing controller of this TextField
                 decoration: const InputDecoration( 
                    icon: Icon(Icons.timer), //icon of text field
                    labelText: "Hora Final" //label text of field
@@ -107,12 +125,12 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                       //converting to DateTime so that we can further format on different pattern.
                       print(parsedTime); //output 1970-01-01 22:53:00.000
                       String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                      print(formattedTime); //output 14:59:00
+                      print(formattedTime); //output 14:59
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                       setState(() {
                         TimeInputController.instance.text2 = formattedTime;
-                        timeinput.text = formattedTime; //set the value of text field. 
+                        timeinput2.text = formattedTime; //set the value of text field. 
                       });
                   }else{
                       print("Time is not selected");
@@ -125,7 +143,7 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
 class TimeInputController extends ChangeNotifier{
 
   static TimeInputController instance = TimeInputController();
-
+  
   late String text1="";
   late String text2="";
 
