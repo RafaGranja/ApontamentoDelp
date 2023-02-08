@@ -50,12 +50,13 @@ class _InitTimePickerState extends State<InitTimePicker> {
                       );
                   
                   if(pickedTime != null ){
-                      print(pickedTime.format(context));   //output 10:51 PM
+                      //output 10:51 PM
+                      // ignore: use_build_context_synchronously
                       DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
                       //converting to DateTime so that we can further format on different pattern.
-                      print(parsedTime); //output 1970-01-01 22:53:00.000
+                      //output 1970-01-01 22:53:00.000
                       String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                      print(formattedTime); //output 14:59
+                      //output 14:59
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                       setState(() {
@@ -63,7 +64,6 @@ class _InitTimePickerState extends State<InitTimePicker> {
                         timeinput.text = formattedTime; //set the value of text field. 
                       });
                   }else{
-                      print("Time is not selected");
                   }
                 
                 },
@@ -120,12 +120,13 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                       );
                   
                   if(pickedTime != null ){
-                      print(pickedTime.format(context));   //output 10:51 PM
+                      //output 10:51 PM
+                      // ignore: use_build_context_synchronously
                       DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
                       //converting to DateTime so that we can further format on different pattern.
-                      print(parsedTime); //output 1970-01-01 22:53:00.000
+                      //output 1970-01-01 22:53:00.000
                       String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                      print(formattedTime); //output 14:59
+                      //output 14:59
                       //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                       setState(() {
@@ -133,7 +134,6 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
                         timeinput2.text = formattedTime; //set the value of text field. 
                       });
                   }else{
-                      print("Time is not selected");
                   }
                 },
              );
