@@ -17,15 +17,15 @@ class _InitTimePickerState extends State<InitTimePicker> {
   void initState() {
     timeinput.text = TimeInputController.instance.text1; //set the initial value of text field
     super.initState();
-    timeinput.addListener(() {
-      final String text = timeinput.text;
-      timeinput.value = timeinput.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
+    // timeinput.addListener(() {
+    //   final String text = timeinput.text;
+    //   timeinput.value = timeinput.value.copyWith(
+    //     text: text,
+    //     selection:
+    //         TextSelection(baseOffset: text.length, extentOffset: text.length),
+    //     composing: TextRange.empty,
+    //   );
+    // });
   }
 
   @override
@@ -87,15 +87,15 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
   void initState() {
     timeinput2.text = TimeInputController.instance.text2; //set the initial value of text field
     super.initState();
-    timeinput2.addListener(() {
-      final String text = timeinput2.text;
-      timeinput2.value = timeinput2.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
+    // timeinput2.addListener(() {
+    //   final String text = timeinput2.text;
+    //   timeinput2.value = timeinput2.value.copyWith(
+    //     text: text,
+    //     selection:
+    //         TextSelection(baseOffset: text.length, extentOffset: text.length),
+    //     composing: TextRange.empty,
+    //   );
+    // });
   }
 
   @override
