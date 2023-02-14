@@ -1,13 +1,13 @@
+import 'dart:async';
 
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:intl/intl.dart';
 import '../dateInput/date.dart';
 import '../dateInput/time.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -34,8 +34,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  @override
-
   int _selectedIndex = 0;
   static const List<String> titles = <String>["Apontamento de Horas","Histórico de Atividades","DashBoard"];
 
@@ -127,15 +125,23 @@ class NoteInput extends StatefulWidget {
 
 class _NoteInputState extends State<NoteInput> {
 
+  final TextEditingController noteinput = TextEditingController(); 
+
+  @override
+  void initState() {
+    noteinput.text = NoteController.instance.nota; //set the initial value of text field
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return 
     Container(
       margin: EdgeInsets.only(top:(MediaQuery.of(context).size.width)/20),
       height: (MediaQuery.of(context).size.height)/10,
-      child:const TextField(
+      child:TextField(
               maxLines: 5,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
               contentPadding: EdgeInsets.all(20.0),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -145,7 +151,11 @@ class _NoteInputState extends State<NoteInput> {
               ),
               label: Text('Anotações',textScaleFactor: 1.4,),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              )
+              ),
+              onChanged: (text) {
+                NoteController.instance.nota=text;
+              },
+              controller: noteinput,
             )
     );
   }
@@ -160,6 +170,47 @@ class Adicionar extends StatefulWidget {
 }
 
 class _AdicionarState extends State<Adicionar> {
+
+  var list = <Map>[];
+
+  CollectionReference tasks = FirebaseFirestore.instance.collection('TAREFAS');
+
+
+  Future<void> addTask() {
+    list.clear();
+    tasks.doc(FirebaseAuth.instance.currentUser?.uid.toString()).get()
+            .then((value){
+              var reg = value.get("REGISTROS");
+              for (var i = 0; i < reg.length; i++) {
+                var row = {};
+                row = reg[i];
+                list.add({
+                'DTINICIAL': row['DTINICIAL'], 
+                'DTFINAL': row['DTFINAL'],
+                'HRINICIAL': row['HRINICIAL'], 
+                'HRFINAL' : row['HRFINAL'], 
+                'PROJETO' : row['PROJETO'], 
+                'CLIENTE': row['CLIENTE'], 
+                'NOTA' : row['NOTA'], 
+              });
+              }
+            });
+    list.add({
+          'DTINICIAL': DateInput.instance.text1, 
+          'DTFINAL': DateInput.instance.text2,
+          'HRINICIAL': TimeInputController.instance.text1,
+          'HRFINAL' : TimeInputController.instance.text2,
+          'PROJETO' : ProjetoController.instance.projeto,
+          'CLIENTE': ClienteController.instance.cliente,
+          'NOTA' : NoteController.instance.nota
+        });
+        return tasks.doc(FirebaseAuth.instance.currentUser?.uid.toString()).set({
+          'REGISTROS': list, 
+        })
+        .then((value) => print("Registro inserido"))
+        .catchError((error) => print("Falha ao incluir registro: $error"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -174,17 +225,17 @@ class _AdicionarState extends State<Adicionar> {
             backgroundColor: const MaterialStatePropertyAll<Color>(Colors.red),
           ),
           // ignore: prefer_const_constructors
-          onPressed: () {  },
+          //onPressed: addTask,
+          onPressed: addTask,
           child: const Text(
-            'Adiconar',
-            style: const TextStyle(color: Colors.white),
+            'Adicionar',
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),
     );
   }
 }
-
 
 class ClienteInput extends StatefulWidget {
   const ClienteInput({super.key});
@@ -195,24 +246,36 @@ class ClienteInput extends StatefulWidget {
 
 class _ClienteInputState extends State<ClienteInput> {
 
+  final TextEditingController clienteinput = TextEditingController(); 
+
+  @override
+  void initState() {
+    clienteinput.text = ClienteController.instance.cliente; //set the initial value of text field
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return 
     Container(
       margin: EdgeInsets.only(top:(MediaQuery.of(context).size.width)/10),
       height: (MediaQuery.of(context).size.width)/5,
-      child: TextField(decoration: const InputDecoration(
+      child:  TextField(decoration: const InputDecoration(
               contentPadding: EdgeInsets.zero,
               label: Text('Cliente',textScaleFactor: 1.4,),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
-              onTap:() {
-                  showDialog(
-                  context: context,
-                  builder: (BuildContext context){
-                      return ClienteDialog();
-                  }
-                );
+              // onTap:() {
+              //     showDialog(
+              //     context: context,
+              //     builder: (BuildContext context){
+              //         return ClienteDialog();
+              //     }
+              //   );
+              // },
+              controller: clienteinput,
+              onChanged: (text){
+                ClienteController.instance.cliente=text;
               },
             )
     );
@@ -227,25 +290,38 @@ class ProjetoInput extends StatefulWidget {
 }
 
 class _ProjetoInputState extends State<ProjetoInput> {
+  
+  final TextEditingController projetoinput = TextEditingController(); 
+
+  @override
+  void initState() {
+    projetoinput.text = ProjetoController.instance.projeto; //set the initial value of text field
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return 
     Container(
       height: (MediaQuery.of(context).size.height)/10,
-      child: TextField(decoration: const InputDecoration(
+      child: TextField(
+        decoration: const InputDecoration(
               contentPadding: EdgeInsets.zero,
               label: Text('Projeto',textScaleFactor: 1.4,),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
-              onTap:() {
-                  showDialog(
-                  context: context,
-                  builder: (BuildContext context){
-                      return ProjetoDialog();
-                  }
-                );
-              },
+              // onTap:() {
+              //     showDialog(
+              //     context: context,
+              //     builder: (BuildContext context){
+              //         return ProjetoDialog();
+              //     }
+              //   );
+              // },
+              onChanged: (text){
+                ProjetoController.instance.projeto=text;},
+              controller: projetoinput,
             )
     );
   }
@@ -332,5 +408,20 @@ class _ProjetoDialogState extends State<ProjetoDialog> {
       ],
     );
   }
+}
+
+class NoteController extends ChangeNotifier {
+  static NoteController instance = NoteController();
+  late String nota = "";
+}
+
+class ClienteController extends ChangeNotifier {
+  static ClienteController instance = ClienteController();
+  late String cliente = "";
+}
+
+class ProjetoController extends ChangeNotifier {
+  static ProjetoController instance = ProjetoController();
+  late String projeto = "";
 }
 
