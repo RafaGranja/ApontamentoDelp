@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../dateInput/date.dart';
 import '../dateInput/time.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -176,26 +178,30 @@ class _AdicionarState extends State<Adicionar> {
   CollectionReference tasks = FirebaseFirestore.instance.collection('TAREFAS');
 
 
-  Future<void> addTask() {
+  Future<void> addTask() async {
     list.clear();
-    tasks.doc(FirebaseAuth.instance.currentUser?.uid.toString()).get()
+
+      await tasks.doc(FirebaseAuth.instance.currentUser?.uid.toString()).get()
             .then((value){
               var reg = value.get("REGISTROS");
               for (var i = 0; i < reg.length; i++) {
                 var row = {};
                 row = reg[i];
-                list.add({
-                'DTINICIAL': row['DTINICIAL'], 
-                'DTFINAL': row['DTFINAL'],
-                'HRINICIAL': row['HRINICIAL'], 
-                'HRFINAL' : row['HRFINAL'], 
-                'PROJETO' : row['PROJETO'], 
-                'CLIENTE': row['CLIENTE'], 
-                'NOTA' : row['NOTA'], 
-              });
+                  list.add({
+                    'ID' : i,
+                  'DTINICIAL': row['DTINICIAL'], 
+                  'DTFINAL': row['DTFINAL'],
+                  'HRINICIAL': row['HRINICIAL'], 
+                  'HRFINAL' : row['HRFINAL'], 
+                  'PROJETO' : row['PROJETO'], 
+                  'CLIENTE': row['CLIENTE'], 
+                  'NOTA' : row['NOTA'], 
+                });
               }
-            });
+            }).catchError((error) => print("Falha ao incluir registro: $error"));
+  
     list.add({
+          'ID':list.length,
           'DTINICIAL': DateInput.instance.text1, 
           'DTFINAL': DateInput.instance.text2,
           'HRINICIAL': TimeInputController.instance.text1,
@@ -207,8 +213,114 @@ class _AdicionarState extends State<Adicionar> {
         return tasks.doc(FirebaseAuth.instance.currentUser?.uid.toString()).set({
           'REGISTROS': list, 
         })
-        .then((value) => print("Registro inserido"))
+        .then((value){
+          print("Registro inserido");
+        })
         .catchError((error) => print("Falha ao incluir registro: $error"));
+  }
+
+  void saveTask(){
+
+    if(DateInput.instance.text1.isNotEmpty && DateInput.instance.text2.isNotEmpty){
+
+      if(TimeInputController.instance.text1.isNotEmpty && TimeInputController.instance.text2.isNotEmpty){
+
+        if(ProjetoController.instance.projeto.isNotEmpty){
+
+          if(ClienteController.instance.cliente.isNotEmpty){
+
+            final datahorainicial = DateTime(int.parse(DateInput.instance.text1.split('/')[2]),
+              int.parse(DateInput.instance.text1.split('/')[1]),
+              int.parse(DateInput.instance.text1.split('/')[0]),int.parse(TimeInputController.instance.text1.split(':')[0]), int.parse(TimeInputController.instance.text1.split(':')[1]), 0, 0, 0);
+            final datahorafinalizada = DateTime(int.parse(DateInput.instance.text2.split('/')[2]),
+              int.parse(DateInput.instance.text2.split('/')[1]),
+              int.parse(DateInput.instance.text2.split('/')[0]),int.parse(TimeInputController.instance.text2.split(':')[0]), int.parse(TimeInputController.instance.text2.split(':')[1]), 0, 0, 0);
+
+            if(datahorainicial.compareTo(datahorafinalizada) > 0){
+              Fluttertoast.showToast(
+                msg: "Horário inicial maior que horário final",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 2,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                backgroundColor: Colors.yellow.shade700,
+                webPosition: "center",
+                webBgColor: Colors.yellow.shade700.toString(),);
+            } 
+            else{
+              addTask();
+              setState(() {
+                DateInput.instance.text1 = "";
+                DateInput.instance.text2 = "";
+                TimeInputController.instance.text1 = "";
+                TimeInputController.instance.text2 = "";
+                ProjetoController.instance.projeto = "";
+                ClienteController.instance.cliente = "";
+                NoteController.instance.nota = "";
+          });
+            }
+
+          }
+          else{
+            Fluttertoast.showToast(
+              msg: "Favor inserir um cliente",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              textColor: Colors.white,
+              fontSize: 16.0,
+              backgroundColor: Colors.yellow.shade700,
+              webPosition: "center",
+              webBgColor: Colors.yellow.shade700.toString(),);
+          }
+
+        }
+        else{
+
+          Fluttertoast.showToast(
+            msg: "Favor inserir um projeto",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 2,
+            textColor: Colors.white,
+            fontSize: 16.0,
+            backgroundColor: Colors.yellow.shade700,
+            webPosition: "center",
+            webBgColor: Colors.yellow.shade700.toString(),);
+
+        }
+
+      }
+      else{
+
+        Fluttertoast.showToast(
+          msg: "Favor inserir intervalo de tempo",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 2,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          backgroundColor: Colors.yellow.shade700,
+          webPosition: "center",
+          webBgColor: Colors.yellow.shade700.toString(),);
+      }
+
+    }
+    else{
+
+      Fluttertoast.showToast(
+        msg: "Favor inserir data",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        textColor: Colors.white,
+        fontSize: 16.0,
+        backgroundColor: Colors.yellow.shade700,
+        webPosition: "center",
+        webBgColor: Colors.yellow.shade700.toString(),);
+      }
+
   }
 
   @override
@@ -226,7 +338,7 @@ class _AdicionarState extends State<Adicionar> {
           ),
           // ignore: prefer_const_constructors
           //onPressed: addTask,
-          onPressed: addTask,
+          onPressed: saveTask,
           child: const Text(
             'Adicionar',
             style: TextStyle(color: Colors.white),
