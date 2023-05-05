@@ -19,7 +19,7 @@ class _InitDateState extends State<InitDate> {
     super.initState();
     datecontroller.text = DateInput.instance.text1;
     datecontroller.addListener(() {
-      final String text = datecontroller.text;
+      final String text = datecontroller.text ;
       datecontroller.value = datecontroller.value.copyWith(
         text: text,
         selection:
@@ -31,6 +31,9 @@ class _InitDateState extends State<InitDate> {
 
   @override
   Widget build(BuildContext context) {
+
+    datecontroller.text = DateInput.instance.text1;
+
     return TextField(
                   controller: datecontroller,
               //editing controller of this TextField
@@ -99,6 +102,9 @@ class _FinalDateState extends State<FinalDate> {
 
   @override
   Widget build(BuildContext context) {
+
+    datecontroller.text = DateInput.instance.text2;
+
     return TextField(
                   controller: datecontroller,
               //editing controller of this TextField

@@ -16,20 +16,26 @@ class _InitTimePickerState extends State<InitTimePicker> {
   @override
   void initState() {
     timeinput.text = TimeInputController.instance.text1; //set the initial value of text field
+
+      timeinput.addListener(() {
+      final String text = timeinput.text;
+      timeinput.value = timeinput.value.copyWith(
+        text: text,
+        selection:
+            TextSelection(baseOffset: text.length, extentOffset: text.length),
+        composing: TextRange.empty,
+      );
+      });
+
     super.initState();
-    // timeinput.addListener(() {
-    //   final String text = timeinput.text;
-    //   timeinput.value = timeinput.value.copyWith(
-    //     text: text,
-    //     selection:
-    //         TextSelection(baseOffset: text.length, extentOffset: text.length),
-    //     composing: TextRange.empty,
-    //   );
-    // });
+
   }
 
   @override
   Widget build(BuildContext context) {
+
+    timeinput.text = TimeInputController.instance.text1;
+
     return TextField(
                 controller: timeinput, //editing controller of this TextField
                 decoration: const InputDecoration( 
@@ -86,20 +92,25 @@ class _FinalTimePickerState extends State<FinalTimePicker> {
   @override
   void initState() {
     timeinput2.text = TimeInputController.instance.text2; //set the initial value of text field
+
     super.initState();
-    // timeinput2.addListener(() {
-    //   final String text = timeinput2.text;
-    //   timeinput2.value = timeinput2.value.copyWith(
-    //     text: text,
-    //     selection:
-    //         TextSelection(baseOffset: text.length, extentOffset: text.length),
-    //     composing: TextRange.empty,
-    //   );
-    // });
+
+    timeinput2.addListener(() {
+      final String text = timeinput2.text;
+      timeinput2.value = timeinput2.value.copyWith(
+        text: text,
+        selection:
+            TextSelection(baseOffset: text.length, extentOffset: text.length),
+        composing: TextRange.empty,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    timeinput2.text = TimeInputController.instance.text2;
+
     return TextField(
                 controller: timeinput2, //editing controller of this TextField
                 decoration: const InputDecoration( 
